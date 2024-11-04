@@ -1,77 +1,73 @@
 package automated_schedule;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeRole {
-    private String[] all_Grillers;
-    private String[] all_Fryers;
-    private String[] all_Cashiers;
-    private String[] all_Supervisors;
-
+    public static List<String> all_Grillers;
+    public static List<String> all_Fryers;
+    public static List<String> all_Cashiers;
+    public static List<String> all_Supervisors;
+    
     public EmployeeRole() {
-        all_Grillers = new String[10];
-        all_Fryers = new String[10];
-        all_Cashiers = new String[10];
-        all_Supervisors = new String[10];
+        all_Grillers = new ArrayList<>();
+        all_Fryers = new ArrayList<>();
+        all_Cashiers = new ArrayList<>();
+        all_Supervisors = new ArrayList<>();
     }
-
-    public boolean addEmployee(String name, String postion) {
-        switch (postion.toLowerCase()) {
+    
+    public boolean addEmployee(Employee employee) {
+        String position = employee.getPosition();
+        
+        switch (position.toLowerCase()) {
             case "griller":
-                return addToRole(all_Grillers, name);
+                return addToRole(all_Grillers, employee);
             case "fryer":
-                return addToRole(all_Fryers, name);
+                return addToRole(all_Fryers, employee);
             case "cashier":
-                return addToRole(all_Cashiers, name);
+                return addToRole(all_Cashiers, employee);
             case "supervisor":
-                return addToRole(all_Supervisors, name);
+                return addToRole(all_Supervisors, employee);
             default:
                 return false; // Invalid role
         }
     }
 
-    private boolean addToRole(String[] roleArray, String name) {
-        for (int i = 0; i < roleArray.length; i++) {
-            if (roleArray[i] == null) {
-                roleArray[i] = name;
-                return true;
+    public boolean addToRole(List<String> roleList, Employee employee) {
+        String employeeName = employee.getName();
+        
+        for (String name : roleList) {
+            if (name.equals(employeeName)) {
+                return false; // Employee already exists in this role
             }
         }
-        return false; // No space available
+        
+        roleList.add(employeeName); // Add only the name to the list
+        return true; // Successfully added
     }
+    
+   public static void main(String[] args) {
+	   
+       EmployeeRole employeeRole = new EmployeeRole();
 
-    public String[] getEmployeesByRole(String role) {
-        switch (role.toLowerCase()) {
-            case "griller":
-                return Arrays.stream(all_Grillers).filter(name -> name != null).toArray(String[]::new);
-            case "fryer":
-                return Arrays.stream(all_Fryers).filter(name -> name != null).toArray(String[]::new);
-            case "cashier":
-                return Arrays.stream(all_Cashiers).filter(name -> name != null).toArray(String[]::new);
-            case "supervisor":
-                return Arrays.stream(all_Supervisors).filter(name -> name != null).toArray(String[]::new);
-            default:
-                return new String[0]; // Invalid role
-        }
-    }
+       Employee hiren = new Employee("J", "griller", "Monday", 9.0, 17.0);
+       Employee divy = new Employee("Doe", "griller", "Monday", 9.0, 17.0);
+       Employee hel = new Employee("John ", "griller", "Monday", 9.0, 17.0);
+       Employee griller = new Employee("divy", "fryer", "Tuesday", 9.0, 17.0);
+       
+       
+       
+       employeeRole.addEmployee(hiren);
+       employeeRole.addEmployee(divy);
+       employeeRole.addEmployee(hel);
+       employeeRole.addEmployee(griller);
 
-    public String[][] getAllRoles() {
-        return new String[][] {
-            getEmployeesByRole("griller"),
-            getEmployeesByRole("fryer"),
-            getEmployeesByRole("cashier"),
-            getEmployeesByRole("supervisor")
-        };
-    }
+   
+//	   
+//	System.out.println(all_Grillers);
+//	System.out.println(all_Fryers);
+//	System.out.println(all_Cashiers);
+
+	
 }
-
-
-
-
-
-
-
-
-
-
-
+}
